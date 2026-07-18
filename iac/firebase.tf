@@ -27,3 +27,22 @@ resource "google_firebase_android_app" "android" {
 
   depends_on = [google_firebase_project.default]
 }
+
+# Enables Firebase Authentication itself (Identity Platform config) with
+# email/password sign-in. Chosen over Google/Apple sign-in for v1 because
+# those require a manually-created OAuth client in GCP Console first (no
+# Terraform resource can create one) — email/password is fully
+# self-provisioning. architecture.md §5.3 leaves the sign-in method open;
+# this is the decision.
+resource "google_identity_platform_config" "default" {
+  project = data.google_project.this.project_id
+
+  sign_in {
+    email {
+      enabled           = true
+      password_required = true
+    }
+  }
+
+  depends_on = [google_firebase_project.default]
+}
