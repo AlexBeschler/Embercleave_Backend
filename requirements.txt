@@ -1,0 +1,10 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+firebase-admin==6.5.0
+google-cloud-firestore==2.16.1
+pydantic==2.9.2
+plaid-python==40.1.0
+PyJWT==2.9.0
+cryptography==49.0.0
+google-cloud-secret-manager==2.29.0
+protobuf==4.25.9
