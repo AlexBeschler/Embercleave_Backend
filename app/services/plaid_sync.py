@@ -17,9 +17,12 @@ def _map_account_type(account) -> str | None:
     """architecture.md §4/§11: only "checking" | "credit_card" are modeled.
     Accounts of other Plaid types (investment, loan, other) aren't part of
     this product's scope and are skipped."""
-    if account.type == "depository":
+    # account.type is a plaid.model.account_type.AccountType, which does not
+    # compare equal to plain str via == — compare its string value instead.
+    account_type = str(account.type)
+    if account_type == "depository":
         return "checking"
-    if account.type == "credit":
+    if account_type == "credit":
         return "credit_card"
     return None
 
@@ -30,13 +33,17 @@ def _upsert_accounts(accounts_ref: firestore.CollectionReference, accounts: list
         if mapped_type is None:
             continue
         balances = account.balances
+        # last_updated_datetime is an optional field the SDK omits entirely
+        # when absent — plain attribute access then raises ApiAttributeError
+        # (a subclass of AttributeError), so use getattr with a default.
+        last_updated = getattr(balances, "last_updated_datetime", None)
         accounts_ref.document(account.account_id).set(
             {
                 "type": mapped_type,
                 "name": account.name,
                 "balance": balances.current,
                 "availableBalance": balances.available,
-                "balanceDate": _to_datetime(balances.last_updated_datetime) or firestore.SERVER_TIMESTAMP,
+                "balanceDate": _to_datetime(last_updated) or firestore.SERVER_TIMESTAMP,
                 "updatedAt": firestore.SERVER_TIMESTAMP,
             },
             merge=True,

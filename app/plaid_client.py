@@ -64,7 +64,12 @@ def get_accounts(access_token: str) -> list:
 
 
 def sync_transactions_page(access_token: str, cursor: str | None):
-    request = TransactionsSyncRequest(access_token=access_token, cursor=cursor)
+    # The SDK's cursor field is typed `str` and rejects an explicit None —
+    # it must be omitted entirely to mean "no cursor yet".
+    kwargs = {"access_token": access_token}
+    if cursor is not None:
+        kwargs["cursor"] = cursor
+    request = TransactionsSyncRequest(**kwargs)
     return get_plaid_client().transactions_sync(request)
 
 

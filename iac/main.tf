@@ -10,6 +10,7 @@ locals {
     "cloudscheduler.googleapis.com",
     "artifactregistry.googleapis.com",
     "iam.googleapis.com",
+    "cloudbuild.googleapis.com",
   ]
 }
 

@@ -50,11 +50,11 @@ Application Default Credentials (no emulator, no mocked Firestore) and
 clean up their own test documents (uid-prefixed `test-<uuid>`). They must
 never be pointed at `ENVIRONMENT=prod` — `tests/conftest.py` asserts this.
 
-The Plaid HTTP layer (`app/plaid_client.py`) is stubbed in these tests —
-`embercleave-plaid-secret-dev` doesn't yet hold a real Plaid Sandbox
-secret, so there's no live Plaid API to test against. Everything else is
-real: Firestore reads/writes, and the webhook JWT verification tests sign
-real ES256 tokens with a locally generated EC keypair and verify them with
-the actual `app/plaid_webhook_verify.py` logic. Once a real Sandbox secret
-is populated, add an end-to-end test using Plaid's `/sandbox/public_token/create`
-to drive a real `/bank-connection` round trip.
+Most tests stub the Plaid HTTP layer (`app/plaid_client.py`) to isolate
+business logic. `tests/test_plaid_sandbox_e2e.py` is the exception: it
+drives a real `/sandbox/public_token/create` → `POST /bank-connection`
+round trip against the live Plaid Sandbox API (using the real secret in
+`embercleave-plaid-secret-dev`) and real dev Firestore, with no mocking.
+The webhook JWT verification tests sign real ES256 tokens with a locally
+generated EC keypair and verify them with the actual
+`app/plaid_webhook_verify.py` logic.
