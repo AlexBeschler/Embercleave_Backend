@@ -5,3 +5,54 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 .DS_Store
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Virtual Environments & Packages
+.env
+.venv
+env/
+venv/
+__pypackages__/
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.pytest_cache/
+
+# Local directory for data, cached providers, and modules
+.terraform/
+
+# Individual lines or globs to prevent local files from being committed
+.terraform.lock.hcl
+
+# Local state files containing sensitive resource metadata
+*.tfstate
+*.tfstate.*
+
+# Crash logs generated during errors
+crash.log
+crash.*.log
+
+# Local variable definitions (often contain passwords/API keys)
+*.tfvars
+*.tfvars.json
+
+# Local override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# CLI configuration files
+.terraformrc
+terraform.rc
+
+terraform.tfvars
