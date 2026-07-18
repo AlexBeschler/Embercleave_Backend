@@ -56,6 +56,17 @@ resource "google_identity_platform_config" "default" {
       enabled           = true
       password_required = true
     }
+
+    phone_number {
+      enabled = false
+    }
+  }
+
+  # No multi-tenancy needed (§5.3 — single user pool shared across
+  # dev/prod); declared explicitly so Terraform doesn't perpetually diff
+  # against GCP's own default-populated block.
+  multi_tenant {
+    allow_tenants = false
   }
 
   depends_on = [google_firebase_project.default]

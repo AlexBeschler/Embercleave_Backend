@@ -33,8 +33,19 @@ resource "google_cloud_run_v2_service" "api" {
     }
   }
 
+  # Scale-to-zero (architecture.md §5.1); declared explicitly so Terraform
+  # doesn't perpetually diff against GCP's own default-populated block.
+  scaling {
+    manual_instance_count = 0
+    min_instance_count    = 0
+  }
+
   lifecycle {
-    ignore_changes = [template[0].containers[0].image]
+    ignore_changes = [
+      template[0].containers[0].image,
+      client,
+      client_version,
+    ]
   }
 
   depends_on = [google_project_service.apis]
@@ -74,6 +85,13 @@ resource "google_cloud_run_v2_service" "internal" {
         value = "internal"
       }
     }
+  }
+
+  # Scale-to-zero (architecture.md §5.1); declared explicitly so Terraform
+  # doesn't perpetually diff against GCP's own default-populated block.
+  scaling {
+    manual_instance_count = 0
+    min_instance_count    = 0
   }
 
   lifecycle {
