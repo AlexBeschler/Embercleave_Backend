@@ -7,6 +7,9 @@
         "source": "/.well-known/apple-app-site-association",
         "headers": [{ "key": "Content-Type", "value": "application/json" }]
       }
+    ],
+    "rewrites": [
+      { "source": "/plaid-oauth-redirect", "destination": "/plaid-oauth-redirect.html" }
     ]
   }
 }

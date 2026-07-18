@@ -12,7 +12,7 @@ variable "region" {
 variable "ios_bundle_id" {
   description = "iOS bundle identifier registered with Firebase"
   type        = string
-  default     = "dev.layer12.Embercleave"
+  default     = "dev.layer12.project-embercleave"
 }
 
 variable "android_package_name" {
