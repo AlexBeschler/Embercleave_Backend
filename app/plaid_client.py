@@ -24,6 +24,12 @@ _ENVIRONMENT_HOSTS = {
 
 _INITIAL_SYNC_DAYS_REQUESTED = 30
 
+# Universal Link that Plaid redirects back to after an OAuth bank's login
+# step; must exactly match an "Allowed redirect URI" in the Plaid Dashboard,
+# and the domain must serve the apple-app-site-association file that
+# authorizes the iOS app's Associated Domains entitlement to intercept it.
+_OAUTH_REDIRECT_URI = "https://embercleave-56804.web.app/plaid-oauth-redirect"
+
 
 @lru_cache
 def get_plaid_client() -> plaid_api.PlaidApi:
@@ -49,6 +55,7 @@ def create_link_token(uid: str, webhook_url: str) -> str:
         products=[Products("transactions")],
         webhook=webhook_url,
         transactions=LinkTokenTransactions(days_requested=_INITIAL_SYNC_DAYS_REQUESTED),
+        redirect_uri=_OAUTH_REDIRECT_URI,
     )
     response = get_plaid_client().link_token_create(request)
     return response.link_token

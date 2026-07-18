@@ -41,3 +41,7 @@ output "firebase_ios_app_id" {
 output "firebase_android_app_id" {
   value = google_firebase_android_app.android.app_id
 }
+
+output "hosting_default_url" {
+  value = google_firebase_hosting_site.default.default_url
+}

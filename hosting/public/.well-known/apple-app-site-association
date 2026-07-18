@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "XV5THRFDS5.dev.layer12.project-embercleave",
+        "paths": ["/plaid-oauth-redirect"]
+      }
+    ]
+  }
+}

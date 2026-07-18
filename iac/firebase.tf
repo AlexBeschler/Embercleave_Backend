@@ -28,6 +28,20 @@ resource "google_firebase_android_app" "android" {
   depends_on = [google_firebase_project.default]
 }
 
+# Default Hosting site, at <project_id>.web.app — exists solely to serve the
+# static apple-app-site-association file Plaid's OAuth bank-redirect flow
+# needs for the iOS Associated Domains / Universal Links handoff. Terraform
+# only declares the site; its content is deployed out-of-band via the
+# Firebase CLI (same reasoning as cloud_run.tf's ignore_changes on image —
+# Terraform shouldn't fight a deploy flow it doesn't drive).
+resource "google_firebase_hosting_site" "default" {
+  provider = google-beta
+  project  = data.google_project.this.project_id
+  site_id  = data.google_project.this.project_id
+
+  depends_on = [google_firebase_project.default]
+}
+
 # Enables Firebase Authentication itself (Identity Platform config) with
 # email/password sign-in. Chosen over Google/Apple sign-in for v1 because
 # those require a manually-created OAuth client in GCP Console first (no

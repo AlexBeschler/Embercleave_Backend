@@ -11,6 +11,7 @@ locals {
     "artifactregistry.googleapis.com",
     "iam.googleapis.com",
     "cloudbuild.googleapis.com",
+    "firebasehosting.googleapis.com",
   ]
 }
 
