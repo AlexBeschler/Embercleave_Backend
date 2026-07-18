@@ -9,6 +9,7 @@ from plaid.model.item_remove_request import ItemRemoveRequest
 from plaid.model.jwk_public_key import JWKPublicKey
 from plaid.model.link_token_create_request import LinkTokenCreateRequest
 from plaid.model.link_token_create_request_user import LinkTokenCreateRequestUser
+from plaid.model.link_token_transactions import LinkTokenTransactions
 from plaid.model.products import Products
 from plaid.model.transactions_sync_request import TransactionsSyncRequest
 from plaid.model.webhook_verification_key_get_request import WebhookVerificationKeyGetRequest
@@ -20,6 +21,8 @@ _ENVIRONMENT_HOSTS = {
     "sandbox": plaid.Environment.Sandbox,
     "production": plaid.Environment.Production,
 }
+
+_INITIAL_SYNC_DAYS_REQUESTED = 30
 
 
 @lru_cache
@@ -45,6 +48,7 @@ def create_link_token(uid: str, webhook_url: str) -> str:
         user=LinkTokenCreateRequestUser(client_user_id=uid),
         products=[Products("transactions")],
         webhook=webhook_url,
+        transactions=LinkTokenTransactions(days_requested=_INITIAL_SYNC_DAYS_REQUESTED),
     )
     response = get_plaid_client().link_token_create(request)
     return response.link_token
